@@ -1,5 +1,5 @@
-# todo: add project description
-
+# Issue Tracker Application
+A minimal but production-minded Issue Tracker backend app that supports users, projects, and issues, with real-time updates and role-based access.
 
 ## Tech stack
 - **Backend**
@@ -32,7 +32,7 @@ $ mvn clean test
 ## How to package application as docker image
 
 ```shell
-$ docker build -t issueTracker:1.0 .
+$ docker build -t issue-tracker:1.0 .
 ```
 
 ## How to run application
@@ -76,8 +76,7 @@ $ docker exec -it mongodb bash
 - 
 - todo: add more details about concurrency and caching
 - 
-2. ### Why choose MongoDB over SQL?
-
+1. ### Why choose MongoDB over SQL?
   Advantages for this use case:
   - Flexible schema for evolving issue metadata (custom fields, tags)
 - Embedded documents reduce join overhead (comments within issues)
@@ -87,6 +86,10 @@ $ docker exec -it mongodb bash
   Trade-offs:
   - No enforced referential integrity (handle in application layer)
   - Limited multi-document transactions (MongoDB 4.0+ supports, but less mature)
+1. ### Assumptions:
+- Every project is owned by a single user of role PROJECT_OWNER
+- Only PROJECT_OWNER can create/update/delete a project, and can assign/unassign other users to an issue, or delete an issue.
+- 
 3. Hibernate implementation of javax validations are utilized to validate the json input data.
 
 4. ControllerAdvice is utilized to centralize error handling and construct error responses to the clients.

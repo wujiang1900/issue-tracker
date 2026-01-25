@@ -7,6 +7,7 @@ import com.sitepen.issuetracker.dto.response.ProjectResponse;
 import com.sitepen.issuetracker.exception.ResourceNotFoundException;
 import com.sitepen.issuetracker.model.Project;
 import com.sitepen.issuetracker.model.User;
+import com.sitepen.issuetracker.security.UserRole;
 import com.sitepen.issuetracker.repo.ProjectRepository;
 import com.sitepen.issuetracker.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,10 +27,15 @@ public class ProjectService {
     private final ModelMapper modelMapper;
 
     @Transactional
-    public ProjectResponse createProject(CreateProjectRequest request, String ownerId) {
+    public ProjectResponse createProject(CreateProjectRequest request) {
         // Fetch owner details
+        String ownerId = request.getOwnerId();
         User owner = userRepository.findById(ownerId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Project owner not found"));
+
+        if(owner.getRole() != UserRole.PROJECT_OWNER) {
+            throw new IllegalArgumentException("Only project owners can own projects");
+        }
 
         Project project = Project.builder()
                 .name(request.getName())

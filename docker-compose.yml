@@ -10,9 +10,9 @@ services:
       restart: always
       ports:
       - 27017:27017
-   enrollment-system:
-      image: enrollment-system:1.0
-      container_name: enrollment-system
+   issue-tracker:
+      image: issue-tracker:1.0
+      container_name: issue-tracker
       restart: always
       ports:
       - 8080:8080

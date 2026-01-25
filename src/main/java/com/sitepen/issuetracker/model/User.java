@@ -1,5 +1,6 @@
 package com.sitepen.issuetracker.model;
 
+    import com.sitepen.issuetracker.security.UserRole;
     import jakarta.validation.constraints.Email;
     import jakarta.validation.constraints.NotBlank;
     import jakarta.validation.constraints.Size;
@@ -38,8 +39,7 @@ package com.sitepen.issuetracker.model;
         @NotBlank
         private String password;
 
-        @Builder.Default
-        private String role = "USER";
+        private UserRole role;
 
         @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {

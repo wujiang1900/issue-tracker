@@ -4,7 +4,7 @@ import com.sitepen.issuetracker.dto.request.CreateProjectRequest;
 import com.sitepen.issuetracker.dto.request.UpdateProjectRequest;
 import com.sitepen.issuetracker.dto.response.PageResponse;
 import com.sitepen.issuetracker.dto.response.ProjectResponse;
-import com.sitepen.issuetracker.security.UserPrincipal;
+import com.sitepen.issuetracker.security.Role;
 import com.sitepen.issuetracker.service.ProjectService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -12,7 +12,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,10 +23,10 @@ public class ProjectController {
 
     @PostMapping
     @Operation(summary = "Create new project")
+    @Role("PROJECT_OWNER")
     public ResponseEntity<ProjectResponse> createProject(
-            @Valid @RequestBody CreateProjectRequest request,
-            @AuthenticationPrincipal UserPrincipal principal) {
-        ProjectResponse response = projectService.createProject(request, principal.getId());
+            @Valid @RequestBody CreateProjectRequest request) {
+        ProjectResponse response = projectService.createProject(request);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
@@ -48,6 +47,7 @@ public class ProjectController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Update project")
+    @Role("PROJECT_OWNER")
     public ResponseEntity<ProjectResponse> updateProject(
             @PathVariable String id,
             @Valid @RequestBody UpdateProjectRequest request) {
@@ -56,6 +56,7 @@ public class ProjectController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete project")
+    @Role("PROJECT_OWNER")
     public ResponseEntity<Void> deleteProject(@PathVariable String id) {
         projectService.deleteProject(id);
         return ResponseEntity.noContent().build();
