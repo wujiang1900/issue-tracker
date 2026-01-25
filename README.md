@@ -1,5 +1,5 @@
-# todo: add project description
-
+# Issue Tracker Application
+A minimal but production-minded Issue Tracker backend app that supports users, projects, and issues, with real-time updates and role-based access.
 
 ## Tech stack
 - **Backend**
@@ -32,7 +32,7 @@ $ mvn clean test
 ## How to package application as docker image
 
 ```shell
-$ docker build -t issueTracker:1.0 .
+$ docker build -t issue-tracker:1.0 .
 ```
 
 ## How to run application
