@@ -1,165 +1,204 @@
 package com.sitepen.issuetracker.service;
 
+import com.sitepen.issuetracker.repo.IssueRepository;
+import com.sitepen.issuetracker.repo.UserRepository;
 import com.sitepen.issuetracker.dto.request.CreateIssueRequest;
 import com.sitepen.issuetracker.dto.request.UpdateIssueRequest;
+import com.sitepen.issuetracker.dto.response.CommentResponse;
 import com.sitepen.issuetracker.dto.response.IssueResponse;
 import com.sitepen.issuetracker.dto.response.PageResponse;
-import com.sitepen.issuetracker.exception.ResourceNotFoundException;
 import com.sitepen.issuetracker.model.CommentEmbed;
 import com.sitepen.issuetracker.model.Issue;
-import com.sitepen.issuetracker.model.Project;
 import com.sitepen.issuetracker.model.User;
-import com.sitepen.issuetracker.repo.IssueRepository;
-import com.sitepen.issuetracker.repo.ProjectRepository;
-import com.sitepen.issuetracker.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class IssueService {
     private final IssueRepository issueRepository;
-    private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
-    private final ModelMapper modelMapper;
-    private final NotificationService notificationService;
+    private final MongoTemplate mongoTemplate;
 
-    @Transactional
     public IssueResponse createIssue(CreateIssueRequest request, String reporterId) {
-        // Validate project exists
-        Project project = projectRepository.findById(request.getProjectId())
-            .orElseThrow(() -> new ResourceNotFoundException("Project not found"));
-
-        // Validate assignee if provided
-        String assigneeName = null;
-        if (request.getAssigneeId() != null) {
-            User assignee = userRepository.findById(request.getAssigneeId())
-                .orElseThrow(() -> new ResourceNotFoundException("Assignee not found"));
-            assigneeName = assignee.getName();
-        }
-
         User reporter = userRepository.findById(reporterId)
-            .orElseThrow(() -> new ResourceNotFoundException("Reporter not found"));
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
         Issue issue = Issue.builder()
-            .title(request.getTitle())
-            .description(request.getDescription())
-            .status(request.getStatus() != null ? request.getStatus() : "OPEN")
-            .priority(request.getPriority() != null ? request.getPriority() : "MEDIUM")
-            .projectId(project.getId())
-            .projectName(project.getName()) // Denormalize
-            .assigneeId(request.getAssigneeId())
-            .assigneeName(assigneeName)
-            .reporterId(reporterId)
-            .reporterName(reporter.getName())
-            .tags(request.getTags() != null ? ConcurrentHashMap.newKeySet(request.getTags().size()) : ConcurrentHashMap.newKeySet())
-            .build();
+                .title(request.getTitle())
+                .description(request.getDescription())
+                .status("OPEN")
+                .priority(request.getPriority())
+                .projectId(request.getProjectId())
+                .assigneeId(request.getAssigneeId())
+                .reporterId(reporterId)
+                .reporterName(reporter.getName())
+                .tags(request.getTags())
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
 
-        if (request.getTags() != null) {
-            issue.getTags().addAll(request.getTags());
-        }
-
-        Issue saved = issueRepository.save(issue);
-
-        // Update project issue count
-        project.setIssueCount(project.getIssueCount() + 1);
-        projectRepository.save(project);
-
-        // Push WebSocket notification
-        notificationService.notifyIssueCreated(saved);
-
-        return modelMapper.map(saved, IssueResponse.class);
+        Issue savedIssue = issueRepository.save(issue);
+        return mapToResponse(savedIssue);
     }
 
-    @Cacheable(value = "issues", key = "#id")
     public IssueResponse getIssueById(String id) {
         Issue issue = issueRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Issue not found"));
-        return modelMapper.map(issue, IssueResponse.class);
+                .orElseThrow(() -> new RuntimeException("Issue not found"));
+        return mapToResponse(issue);
     }
 
     public PageResponse<IssueResponse> getIssuesWithFilters(
-            String projectId, String status, String priority,
-            String assigneeId, String search, int page, int size) {
+            String projectId, String status, String priority, String assigneeId, String search, int page, int size) {
 
-        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
-        Page<Issue> issuePage = issueRepository.findWithFilters(
-            projectId, status, priority, assigneeId, search, pageable
-        );
+        Query query = new Query();
 
-        List<IssueResponse> content = issuePage.getContent().stream()
-            .map(issue -> modelMapper.map(issue, IssueResponse.class))
-            .collect(Collectors.toList());
-
-        return PageResponse.<IssueResponse>builder()
-            .content(content)
-            .page(issuePage.getNumber())
-            .size(issuePage.getSize())
-            .totalElements(issuePage.getTotalElements())
-            .totalPages(issuePage.getTotalPages())
-            .build();
-    }
-
-    @CacheEvict(value = "issues", key = "#id")
-    @Transactional
-    public IssueResponse updateIssue(String id, UpdateIssueRequest request) {
-        Issue issue = issueRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Issue not found"));
-
-        if (request.getTitle() != null) issue.setTitle(request.getTitle());
-        if (request.getDescription() != null) issue.setDescription(request.getDescription());
-        if (request.getStatus() != null) issue.setStatus(request.getStatus());
-        if (request.getPriority() != null) issue.setPriority(request.getPriority());
-
-        if (request.getAssigneeId() != null && !request.getAssigneeId().equals(issue.getAssigneeId())) {
-            User assignee = userRepository.findById(request.getAssigneeId())
-                .orElseThrow(() -> new ResourceNotFoundException("Assignee not found"));
-            issue.setAssigneeId(assignee.getId());
-            issue.setAssigneeName(assignee.getName());
+        if (projectId != null && !projectId.isEmpty()) {
+            query.addCriteria(Criteria.where("projectId").is(projectId));
+        }
+        if (status != null && !status.isEmpty()) {
+            query.addCriteria(Criteria.where("status").is(status));
+        }
+        if (priority != null && !priority.isEmpty()) {
+            query.addCriteria(Criteria.where("priority").is(priority));
+        }
+        if (assigneeId != null && !assigneeId.isEmpty()) {
+            query.addCriteria(Criteria.where("assigneeId").is(assigneeId));
+        }
+        if (search != null && !search.isEmpty()) {
+            query.addCriteria(new Criteria().orOperator(
+                    Criteria.where("title").regex(search, "i"),
+                    Criteria.where("description").regex(search, "i")
+            ));
         }
 
-        Issue updated = issueRepository.save(issue);
-        notificationService.notifyIssueUpdated(updated);
+        long totalCount = mongoTemplate.count(query, Issue.class);
 
-        return modelMapper.map(updated, IssueResponse.class);
+        query.with(PageRequest.of(page, size));
+        List<Issue> issues = mongoTemplate.find(query, Issue.class);
+
+        List<IssueResponse> responses = issues.stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+
+        return PageResponse.<IssueResponse>builder()
+                .content(responses)
+                .page(page)
+                .size(size)
+                .totalElements(totalCount)
+                .totalPages((int) Math.ceil((double) totalCount / size))
+                .build();
     }
 
-    @Transactional
+    public IssueResponse updateIssue(String id, UpdateIssueRequest request) {
+        Issue issue = issueRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Issue not found"));
+
+        if (request.getTitle() != null) {
+            issue.setTitle(request.getTitle());
+        }
+        if (request.getDescription() != null) {
+            issue.setDescription(request.getDescription());
+        }
+        if (request.getStatus() != null) {
+            issue.setStatus(request.getStatus());
+        }
+        if (request.getPriority() != null) {
+            issue.setPriority(request.getPriority());
+        }
+        if (request.getAssigneeId() != null) {
+            issue.setAssigneeId(request.getAssigneeId());
+        }
+        if (request.getTags() != null) {
+            issue.setTags(request.getTags());
+        }
+
+        issue.setUpdatedAt(LocalDateTime.now());
+        Issue updatedIssue = issueRepository.save(issue);
+        return mapToResponse(updatedIssue);
+    }
+
+    public void deleteIssue(String id) {
+        if (!issueRepository.existsById(id)) {
+            throw new RuntimeException("Issue not found");
+        }
+        issueRepository.deleteById(id);
+    }
+
     public void addComment(String issueId, String content, String authorId) {
         Issue issue = issueRepository.findById(issueId)
-            .orElseThrow(() -> new ResourceNotFoundException("Issue not found"));
+                .orElseThrow(() -> new RuntimeException("Issue not found"));
 
         User author = userRepository.findById(authorId)
-            .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
         CommentEmbed comment = CommentEmbed.builder()
-            .id(UUID.randomUUID().toString())
-            .authorId(authorId)
-            .authorName(author.getName())
-            .content(content)
-            .createdAt(LocalDateTime.now())
-            .build();
+                .id(java.util.UUID.randomUUID().toString())
+                .authorId(authorId)
+                .authorName(author.getName())
+                .content(content)
+                .createdAt(LocalDateTime.now())
+                .build();
 
         issue.getComments().add(comment);
-        issue.getCommentCount().incrementAndGet();
-
+        issue.setUpdatedAt(LocalDateTime.now());
         issueRepository.save(issue);
-        notificationService.notifyCommentAdded(issue, comment);
+    }
+
+    public void deleteComment(String issueId, String commentId, String userId) {
+        Issue issue = issueRepository.findById(issueId)
+                .orElseThrow(() -> new RuntimeException("Issue not found"));
+
+        CommentEmbed comment = issue.getComments().stream()
+                .filter(c -> c.getId().equals(commentId))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Comment not found"));
+
+        if (!comment.getAuthorId().equals(userId)) {
+            throw new RuntimeException("Unauthorized: only comment author can delete");
+        }
+
+        issue.getComments().remove(comment);
+        issue.setUpdatedAt(LocalDateTime.now());
+        issueRepository.save(issue);
+    }
+
+    private IssueResponse mapToResponse(Issue issue) {
+        List<CommentResponse> commentResponses = issue.getComments().stream()
+                .map(comment -> CommentResponse.builder()
+                        .id(comment.getId())
+                        .authorId(comment.getAuthorId())
+                        .authorName(comment.getAuthorName())
+                        .content(comment.getContent())
+                        .createdAt(comment.getCreatedAt())
+                        .build())
+                .collect(Collectors.toList());
+
+        return IssueResponse.builder()
+                .id(issue.getId())
+                .title(issue.getTitle())
+                .description(issue.getDescription())
+                .status(issue.getStatus())
+                .priority(issue.getPriority())
+                .projectId(issue.getProjectId())
+                .assigneeId(issue.getAssigneeId())
+                .reporterId(issue.getReporterId())
+                .reporterName(issue.getReporterName())
+                .tags(issue.getTags())
+                .commentCount(issue.getComments().size())
+                .comments(commentResponses)
+                .createdAt(issue.getCreatedAt())
+                .updatedAt(issue.getUpdatedAt())
+                .build();
     }
 }

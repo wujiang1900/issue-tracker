@@ -6,6 +6,7 @@ import com.sitepen.issuetracker.dto.request.SignUpRequest;
 import com.sitepen.issuetracker.dto.response.AuthResponse;
 import com.sitepen.issuetracker.model.User;
 import com.sitepen.issuetracker.repo.UserRepository;
+import com.sitepen.issuetracker.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
     public AuthResponse login(LoginRequest loginRequest) {
         Optional<User> userOptional = userRepository.findByEmail(loginRequest.getEmail());
@@ -29,11 +31,11 @@ public class AuthService {
         
         User user = userOptional.get();
         
-        if (!user.isActive()) {
+        if (!user.isEnabled()) {
             throw new IllegalArgumentException("Account is not active");
         }
         
-        if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPasswordHash())) {
+        if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
             throw new IllegalArgumentException("Invalid email or password");
         }
         
@@ -57,19 +59,16 @@ public class AuthService {
         // Create new user
         User user = User.builder()
                 .email(signUpRequest.getEmail())
-                .passwordHash(passwordEncoder.encode(signUpRequest.getPassword()))
+                .password(passwordEncoder.encode(signUpRequest.getPassword()))
                 .name(signUpRequest.getName())
-                .authProvider("LOCAL")
-                .createdAt(LocalDateTime.now())
-                .isActive(true)
+                .role("USER")
                 .build();
-        
+
         return userRepository.save(user);
     }
 
     private String generateToken(User user) {
-        // TODO: Implement JWT token generation
-        // For now, return a placeholder
-        return "jwt-token-placeholder";
+        return jwtService.generateToken(user);
     }
+
 }
