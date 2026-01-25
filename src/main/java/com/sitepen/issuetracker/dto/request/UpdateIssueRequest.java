@@ -1,23 +1,32 @@
 package com.sitepen.issuetracker.dto.request;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class UpdateIssueRequest {
-    @Size(min = 5, max = 200)
-    private String title;
+    import jakarta.validation.constraints.Pattern;
+    import jakarta.validation.constraints.Size;
+    import lombok.AllArgsConstructor;
+    import lombok.Builder;
+    import lombok.Data;
+    import lombok.NoArgsConstructor;
 
-    @Size(max = 5000)
-    private String description;
+    import java.util.Set;
 
-    private String assigneeId;
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public class UpdateIssueRequest {
+        @Size(min = 5, max = 200)
+        private String title;
 
-    @Pattern(regexp = "OPEN|IN_PROGRESS|CLOSED", message = "Invalid status")
-    private String status;
+        @Size(max = 5000)
+        private String description;
 
-    @Pattern(regexp = "LOW|MEDIUM|HIGH|CRITICAL", message = "Invalid priority")
-    private String priority;
+        private String assigneeId;
 
-    private Set<String> tags;
-}
+        @Pattern(regexp = "OPEN|IN_PROGRESS|CLOSED", message = "Invalid status")
+        private String status;
+
+        @Pattern(regexp = "LOW|MEDIUM|HIGH|CRITICAL", message = "Invalid priority")
+        private String priority;
+
+        private Set<String> tags;
+    }
