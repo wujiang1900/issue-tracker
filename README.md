@@ -69,14 +69,24 @@ $ docker exec -it mongodb bash
 
 ## Design/Implementation notes:
 1. ### The following are utilized in an effort to improve performance and scalability:
-- Add pagination support for GET /fetchStudents which could return huge Json response.
+- Add pagination support for endpoints which could return huge Json response.
 - MongoDb is used so that DB can be easily scaled horizontally to support huge dataset. Document-based DB has the advantage of improved query performance too, because the related document has already been stored with the main document, therefore reducing overhead of table joins.
 - Use of MongoTemplate to implement search functionality based on the different params the client passes in. This greatly improves data fetching performance over using java code that bring all data then filter.
 - Spring cache is used to cache class and semester data.
-- Concurrent Hashset implemented with ConcurrentHashMap are used for collections of classes for an enrollment and collections of enrollments for a student. AtomicInteger is used for total credits for a student. All of these concurrent data structure are used to support multi-threading and support any future concurrent enhancement needs.
+- 
 - todo: add more details about concurrency and caching
 - 
-2.
+2. ### Why choose MongoDB over SQL?
+
+  Advantages for this use case:
+  - Flexible schema for evolving issue metadata (custom fields, tags)
+- Embedded documents reduce join overhead (comments within issues)
+    - Horizontal scaling with sharding for future growth
+  - Fast writes for real-time updates and activity streams
+  - JSON-native storage aligns with REST API responses
+  Trade-offs:
+  - No enforced referential integrity (handle in application layer)
+  - Limited multi-document transactions (MongoDB 4.0+ supports, but less mature)
 3. Hibernate implementation of javax validations are utilized to validate the json input data.
 
 4. ControllerAdvice is utilized to centralize error handling and construct error responses to the clients.
