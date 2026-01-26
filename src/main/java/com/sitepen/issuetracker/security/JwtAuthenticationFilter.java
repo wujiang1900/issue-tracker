@@ -1,5 +1,6 @@
 package com.sitepen.issuetracker.security;
 
+import com.sitepen.issuetracker.model.User;
 import com.sitepen.issuetracker.service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -44,10 +45,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userService.loadUserByUsername(username);
             if (jwtService.isTokenValid(jwt, userDetails)) {
+                UserPrincipal userPrincipal = new UserPrincipal((User) userDetails);
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails,
+                        userPrincipal,
                         null,
-                        userDetails.getAuthorities()
+                        userPrincipal.getAuthorities()
                 );
                 authToken.setDetails(
                         new WebAuthenticationDetailsSource().buildDetails(request)

@@ -19,4 +19,8 @@ public class CreateProjectRequest {
 
     @Size(max = 500, message = "Description max 500 characters")
     private String description;
+
+    @NotBlank(message = "Project owner id is required")
+    @Size(min = 3, max = 20, message = "Project owner id must be 3-20 characters")
+    private String ownerId;
 }

@@ -38,8 +38,7 @@ package com.sitepen.issuetracker.model;
         @NotBlank
         private String password;
 
-        @Builder.Default
-        private String role = "USER";
+        private UserRole role;
 
         @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {

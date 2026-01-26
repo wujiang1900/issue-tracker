@@ -27,6 +27,10 @@ public class ProjectController {
     public ResponseEntity<ProjectResponse> createProject(
             @Valid @RequestBody CreateProjectRequest request,
             @AuthenticationPrincipal UserPrincipal principal) {
+        if (principal == null) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
         ProjectResponse response = projectService.createProject(request, principal.getId());
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }

@@ -1,5 +1,6 @@
 package com.sitepen.issuetracker.dto.request;
 
+import com.sitepen.issuetracker.model.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -11,6 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SignUpRequest {
+    @NotBlank(message = "User id is required")
+    @Size(min = 3, max = 20, message = "User id must be 3-20 characters")
+    private String id;
 
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email format")
@@ -22,4 +26,6 @@ public class SignUpRequest {
 
     @NotBlank(message = "Name is required")
     private String name;
+
+    private UserRole role = UserRole.DEVELOPER;
 }
