@@ -38,8 +38,7 @@ public class AuthService {
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
             throw new IllegalArgumentException("Invalid email or password");
         }
-        
-        // Generate token (you'll need to implement JWT token generation)
+
         String token = generateToken(user);
         
         return AuthResponse.builder()
