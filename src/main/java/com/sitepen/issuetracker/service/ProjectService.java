@@ -27,12 +27,7 @@ public class ProjectService {
     private final ModelMapper modelMapper;
 
     @Transactional
-    public ProjectResponse createProject(CreateProjectRequest request, String loginUserId) {
-        User loginUser = userRepository.findById(loginUserId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-        if(loginUser.getRole() != UserRole.PROJECT_OWNER) {
-            throw new IllegalArgumentException("Only project owners can create projects");
-        }
+    public ProjectResponse createProject(CreateProjectRequest request) {
         // Fetch owner details
         String ownerId = request.getOwnerId();
         User owner = userRepository.findById(ownerId)
