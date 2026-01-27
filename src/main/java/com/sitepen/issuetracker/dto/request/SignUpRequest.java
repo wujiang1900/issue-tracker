@@ -1,6 +1,6 @@
 package com.sitepen.issuetracker.dto.request;
 
-import com.sitepen.issuetracker.model.UserRole;
+import com.sitepen.issuetracker.security.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

@@ -7,7 +7,7 @@ import com.sitepen.issuetracker.dto.response.ProjectResponse;
 import com.sitepen.issuetracker.exception.ResourceNotFoundException;
 import com.sitepen.issuetracker.model.Project;
 import com.sitepen.issuetracker.model.User;
-import com.sitepen.issuetracker.model.UserRole;
+import com.sitepen.issuetracker.security.UserRole;
 import com.sitepen.issuetracker.repo.ProjectRepository;
 import com.sitepen.issuetracker.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
