@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: issue-tracker
+
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/issuetracker
+      auto-index-creation: true
+
+  cache:
+    type: simple
+
+server:
+  port: 8080
+
+jwt:
+  secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+  expiration: 86400000
+
+logging:
+  level:
+    com.issuetracker: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.data.mongodb: DEBUG
