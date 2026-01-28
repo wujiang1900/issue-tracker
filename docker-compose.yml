@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: issuetracker
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - issuetracker-network
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/issuetracker --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  issuetracker-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: issueTracker
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATA_MONGODB_URI: mongodb://mongodb:27017/issuetracker
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - issuetracker-network
+    restart: unless-stopped
+
+volumes:
+  mongodb_data:
+
+networks:
+  issuetracker-network:
+    driver: bridge
