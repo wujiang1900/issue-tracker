@@ -2,6 +2,11 @@
 
 ## 🚀 Get Started in 3 Steps
 
+### Step 0: Build the Application
+```bash
+mvn clean install
+```
+
 ### Step 1: Start the Application
 ```bash
 docker-compose up
