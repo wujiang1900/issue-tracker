@@ -1,0 +1,49 @@
+# Alternative buildspec for Docker Hub deployment
+version: 0.2
+
+env:
+  variables:
+    JAVA_HOME: "/usr/lib/jvm/java-17-amazon-corretto"
+    MAVEN_OPTS: "-Xmx1024m"
+    DOCKER_REGISTRY: "docker.io"
+    IMAGE_NAME: "issue-tracker"
+  secrets-manager:
+    DOCKER_USERNAME: dockerhub-credentials:username
+    DOCKER_PASSWORD: dockerhub-credentials:password
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto17
+      docker: 20
+
+  pre_build:
+    commands:
+      - echo "Logging in to Docker Hub..."
+      - echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin $DOCKER_REGISTRY
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=${COMMIT_HASH:=latest}
+      - REPOSITORY_URI=$DOCKER_USERNAME/$IMAGE_NAME
+
+  build:
+    commands:
+      - echo "Building with Maven..."
+      - mvn clean package -DskipTests
+      - echo "Building Docker image..."
+      - docker build -t $IMAGE_NAME:latest .
+      - docker tag $IMAGE_NAME:latest $REPOSITORY_URI:latest
+      - docker tag $IMAGE_NAME:latest $REPOSITORY_URI:$IMAGE_TAG
+
+  post_build:
+    commands:
+      - mvn test
+      - docker push $REPOSITORY_URI:latest
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
+
+artifacts:
+  files:
+    - target/*.jar
+
+cache:
+  paths:
+    - '/root/.m2/**/*'
