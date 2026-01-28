@@ -10,6 +10,7 @@ import com.sitepen.issuetracker.model.User;
 import com.sitepen.issuetracker.security.UserRole;
 import com.sitepen.issuetracker.repo.ProjectRepository;
 import com.sitepen.issuetracker.repo.UserRepository;
+import com.sitepen.issuetracker.validation.ProjectOwnerValidator;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -28,10 +29,8 @@ public class ProjectService {
 
     @Transactional
     public ProjectResponse createProject(CreateProjectRequest request) {
-        // Fetch owner details
         String ownerId = request.getOwnerId();
-        User owner = userRepository.findById(ownerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Project owner not found"));
+        User owner = new ProjectOwnerValidator(userRepository).validateOwnerId(ownerId);
 
         if(owner.getRole() != UserRole.PROJECT_OWNER) {
             throw new IllegalArgumentException("Only project owners can own projects");
@@ -75,6 +74,12 @@ public class ProjectService {
     public ProjectResponse updateProject(String id, UpdateProjectRequest request) {
         Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + id));
+
+        if (request.getOwnerId() != null) {
+            String ownerId = request.getOwnerId();
+            new ProjectOwnerValidator(userRepository).validateOwnerId(ownerId);
+            project.setOwnerId(ownerId);
+        }
 
         if (request.getName() != null) {
             project.setName(request.getName());

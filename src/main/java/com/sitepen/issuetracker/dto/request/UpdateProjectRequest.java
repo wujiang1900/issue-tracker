@@ -1,5 +1,6 @@
 package com.sitepen.issuetracker.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,4 +17,7 @@ public class UpdateProjectRequest {
 
     @Size(max = 500, message = "Description max 500 characters")
     private String description;
+
+    @Size(min = 3, max = 20, message = "Project owner id must be 3-20 characters")
+    private String ownerId;
 }
