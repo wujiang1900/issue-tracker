@@ -11,13 +11,10 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProjectResponse {
+public class CommentResponse {
     private String id;
-    private String name;
-    private String description;
-    private String ownerId;
-    private String ownerName;
-    private int issueCount;
+    private String authorId;
+    private String authorName;
+    private String content;
     private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 }
