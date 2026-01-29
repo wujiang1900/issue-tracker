@@ -1,4 +1,4 @@
-package com.issuetracker.dto;
+package com.issuetracker.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -10,10 +10,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProjectRequest {
+public class AddCommentRequest {
 
-    @NotBlank(message = "Project name is required")
-    private String name;
-
-    private String description;
+    @NotBlank(message = "Comment text is required")
+    private String text;
 }

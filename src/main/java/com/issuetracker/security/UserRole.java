@@ -1,4 +1,4 @@
-package com.issuetracker.model;
+package com.issuetracker.security;
 
 public enum UserRole {
     USER,

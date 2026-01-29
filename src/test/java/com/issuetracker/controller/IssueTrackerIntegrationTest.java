@@ -1,10 +1,10 @@
 package com.issuetracker.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.issuetracker.dto.AuthResponse;
-import com.issuetracker.dto.IssueRequest;
-import com.issuetracker.dto.LoginRequest;
-import com.issuetracker.dto.ProjectRequest;
+import com.issuetracker.dto.response.AuthResponse;
+import com.issuetracker.dto.request.IssueRequest;
+import com.issuetracker.dto.request.LoginRequest;
+import com.issuetracker.dto.request.ProjectRequest;
 import com.issuetracker.model.IssuePriority;
 import com.issuetracker.model.IssueStatus;
 import com.issuetracker.repository.IssueRepository;

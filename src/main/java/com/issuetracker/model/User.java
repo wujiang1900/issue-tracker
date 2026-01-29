@@ -1,5 +1,6 @@
 package com.issuetracker.model;
 
+import com.issuetracker.security.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

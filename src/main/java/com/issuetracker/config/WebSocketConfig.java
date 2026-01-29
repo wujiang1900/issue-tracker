@@ -1,4 +1,4 @@
-package com.issuetracker.websocket;
+package com.issuetracker.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

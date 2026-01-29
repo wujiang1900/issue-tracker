@@ -1,6 +1,6 @@
 package com.issuetracker.websocket;
 
-import com.issuetracker.dto.IssueResponse;
+import com.issuetracker.dto.response.IssueResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessagingTemplate;

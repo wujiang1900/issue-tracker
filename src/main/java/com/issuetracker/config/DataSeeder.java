@@ -4,6 +4,7 @@ import com.issuetracker.model.*;
 import com.issuetracker.repository.IssueRepository;
 import com.issuetracker.repository.ProjectRepository;
 import com.issuetracker.repository.UserRepository;
+import com.issuetracker.security.UserRole;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -14,7 +15,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor

@@ -1,11 +1,11 @@
 package com.issuetracker.service;
 
-import com.issuetracker.dto.AuthResponse;
-import com.issuetracker.dto.LoginRequest;
-import com.issuetracker.dto.SignupRequest;
+import com.issuetracker.dto.response.AuthResponse;
+import com.issuetracker.dto.request.LoginRequest;
+import com.issuetracker.dto.request.SignupRequest;
 import com.issuetracker.exception.ResourceAlreadyExistsException;
 import com.issuetracker.model.User;
-import com.issuetracker.model.UserRole;
+import com.issuetracker.security.UserRole;
 import com.issuetracker.repository.UserRepository;
 import com.issuetracker.security.JwtUtil;
 import lombok.RequiredArgsConstructor;

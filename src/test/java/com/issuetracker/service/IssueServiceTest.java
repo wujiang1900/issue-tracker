@@ -1,13 +1,14 @@
 package com.issuetracker.service;
 
-import com.issuetracker.dto.IssueRequest;
-import com.issuetracker.dto.IssueResponse;
+import com.issuetracker.dto.request.IssueRequest;
+import com.issuetracker.dto.response.IssueResponse;
 import com.issuetracker.exception.ResourceNotFoundException;
 import com.issuetracker.exception.UnauthorizedException;
 import com.issuetracker.model.*;
 import com.issuetracker.repository.IssueRepository;
 import com.issuetracker.repository.ProjectRepository;
 import com.issuetracker.repository.UserRepository;
+import com.issuetracker.security.UserRole;
 import com.issuetracker.websocket.IssueEventPublisher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

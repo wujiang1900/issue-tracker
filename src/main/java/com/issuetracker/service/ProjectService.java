@@ -1,12 +1,12 @@
 package com.issuetracker.service;
 
-import com.issuetracker.dto.ProjectRequest;
-import com.issuetracker.dto.ProjectResponse;
+import com.issuetracker.dto.request.ProjectRequest;
+import com.issuetracker.dto.response.ProjectResponse;
 import com.issuetracker.exception.ResourceNotFoundException;
 import com.issuetracker.exception.UnauthorizedException;
 import com.issuetracker.model.Project;
 import com.issuetracker.model.User;
-import com.issuetracker.model.UserRole;
+import com.issuetracker.security.UserRole;
 import com.issuetracker.repository.ProjectRepository;
 import com.issuetracker.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

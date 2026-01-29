@@ -1,7 +1,7 @@
 package com.issuetracker.controller;
 
-import com.issuetracker.dto.ProjectRequest;
-import com.issuetracker.dto.ProjectResponse;
+import com.issuetracker.dto.request.ProjectRequest;
+import com.issuetracker.dto.response.ProjectResponse;
 import com.issuetracker.service.ProjectService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

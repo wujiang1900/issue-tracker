@@ -1,8 +1,8 @@
 package com.issuetracker.controller;
 
-import com.issuetracker.dto.CommentRequest;
-import com.issuetracker.dto.IssueRequest;
-import com.issuetracker.dto.IssueResponse;
+import com.issuetracker.dto.request.AddCommentRequest;
+import com.issuetracker.dto.request.IssueRequest;
+import com.issuetracker.dto.response.IssueResponse;
 import com.issuetracker.service.IssueService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -101,7 +101,7 @@ public class IssueController {
     @Operation(summary = "Add a comment to an issue")
     public ResponseEntity<IssueResponse> addComment(
             @PathVariable String id,
-            @Valid @RequestBody CommentRequest request,
+            @Valid @RequestBody AddCommentRequest request,
             Authentication authentication) {
         String userEmail = authentication.getName();
         return ResponseEntity.ok(issueService.addComment(id, request, userEmail));

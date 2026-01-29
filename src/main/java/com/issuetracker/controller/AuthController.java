@@ -1,8 +1,8 @@
 package com.issuetracker.controller;
 
-import com.issuetracker.dto.AuthResponse;
-import com.issuetracker.dto.LoginRequest;
-import com.issuetracker.dto.SignupRequest;
+import com.issuetracker.dto.response.AuthResponse;
+import com.issuetracker.dto.request.LoginRequest;
+import com.issuetracker.dto.request.SignupRequest;
 import com.issuetracker.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

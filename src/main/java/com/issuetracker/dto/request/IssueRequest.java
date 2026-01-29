@@ -1,35 +1,37 @@
-package com.issuetracker.dto;
+package com.issuetracker.dto.request;
 
-import com.issuetracker.model.ActivityLog;
-import com.issuetracker.model.Comment;
 import com.issuetracker.model.IssuePriority;
 import com.issuetracker.model.IssueStatus;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class IssueResponse {
+public class IssueRequest {
 
-    private String id;
+    @NotBlank(message = "Title is required")
     private String title;
+
     private String description;
+
+    @NotNull(message = "Status is required")
     private IssueStatus status;
+
+    @NotNull(message = "Priority is required")
     private IssuePriority priority;
+
+    @NotBlank(message = "Project ID is required")
     private String projectId;
-    private String projectName;
+
     private String assigneeId;
-    private String assigneeName;
+
     private List<String> tags;
-    private List<Comment> comments;
-    private List<ActivityLog> activityLogs;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 }
