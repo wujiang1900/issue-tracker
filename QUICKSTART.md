@@ -1,5 +1,11 @@
 # Issue Tracker - Quick Start Guide
 
+## 🚀 Get Started in 1 Step
+```bash
+start-docker.bat
+./
+```
+
 ## 🚀 Get Started in 3 Steps
 
 ### Step 0: Build the Application

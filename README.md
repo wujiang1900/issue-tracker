@@ -17,6 +17,9 @@ A minimal but production-minded Issue Tracker backend app that supports users, p
  - MongoDB (will be run as docker container, no need to install locally)
  - Docker ([https://docs.docker.com/get-docker/](https://docs.docker.com/get-docker/))
 
+## Quick Start Guide
+See QUICKSTART.md file for quick start instructions.
+
 ## How to build
 
 ```shell
