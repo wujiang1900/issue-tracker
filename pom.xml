@@ -9,8 +9,8 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>com.sitepen</groupId>
-    <artifactId>Issue-tracker</artifactId>
+    <groupId>com.issuetracker</groupId>
+    <artifactId>issue-tracker</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
