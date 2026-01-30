@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataMongoTest
+@ActiveProfiles("test")
 class IssueRepositoryTest {
 
     @Autowired

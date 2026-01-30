@@ -1,8 +1,25 @@
+debug: false
+
 spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017/issuetracker_test
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+
+issuetracker:
+  seed:
+    force: false
+
+de:
+  flapdoodle:
+    mongodb:
+      embedded:
+        version: 7.0.5
 
 logging:
   level:
+    root: WARN
     com.issuetracker: INFO
+    org.springframework.boot.autoconfigure: ERROR
