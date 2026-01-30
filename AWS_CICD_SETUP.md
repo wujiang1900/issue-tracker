@@ -198,7 +198,7 @@ Create **task-definition.json:**
       "image": "ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/issue-tracker:latest",
       "portMappings": [
         {
-          "containerPort": 8080,
+          "containerPort": 8081,
           "protocol": "tcp"
         }
       ],
@@ -241,7 +241,7 @@ aws ecs create-service \
   --desired-count 2 \
   --launch-type FARGATE \
   --network-configuration "awsvpcConfiguration={subnets=[subnet-xxx,subnet-yyy],securityGroups=[sg-xxx],assignPublicIp=ENABLED}" \
-  --load-balancers "targetGroupArn=arn:aws:elasticloadbalancing:region:account:targetgroup/issue-tracker/xxx,containerName=issue-tracker,containerPort=8080"
+  --load-balancers "targetGroupArn=arn:aws:elasticloadbalancing:region:account:targetgroup/issue-tracker/xxx,containerName=issue-tracker,containerPort=8081"
 ```
 
 ## Environment Variables

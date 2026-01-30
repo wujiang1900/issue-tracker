@@ -45,7 +45,7 @@ if %errorlevel% neq 0 (
     echo.
     echo Troubleshooting:
     echo 1. Make sure Docker Desktop is running
-    echo 2. Check if ports 8080 and 27017 are available
+    echo 2. Check if ports 8081 and 27017 are available
     echo 3. Try: docker-compose down
     echo 4. Then run this script again
     pause
@@ -57,8 +57,8 @@ echo ========================================
 echo Services started successfully!
 echo ========================================
 echo.
-echo Application: http://localhost:8080
-echo Swagger UI:  http://localhost:8080/swagger-ui.html
+echo Application: http://localhost:8081
+echo Swagger UI:  http://localhost:8081/swagger-ui.html
 echo.
 echo View logs with: docker-compose logs -f
 echo Stop with:      docker-compose down

@@ -11,3 +11,9 @@ logging:
   level:
     com.issuetracker: INFO
     org.springframework.security: INFO
+
+# Database seeding behavior (safe defaults)
+issuetracker:
+  seed:
+    force: false
+    wipe: false

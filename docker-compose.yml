@@ -25,10 +25,12 @@ services:
       dockerfile: Dockerfile
     container_name: issueTracker
     ports:
-      - "8080:8080"
+      - "8081:8081"
     environment:
       SPRING_PROFILES_ACTIVE: docker
       SPRING_DATA_MONGODB_URI: mongodb://mongodb:27017/issuetracker
+      ISSUETRACKER_SEED_FORCE: "true"
+      ISSUETRACKER_SEED_WIPE: "true"
     depends_on:
       mongodb:
         condition: service_healthy

@@ -24,7 +24,7 @@ Wait for these messages:
 - ✅ `issueTracker | Database seeding completed successfully!`
 
 ### Step 2: Open Swagger UI
-Navigate to: **http://localhost:8080/swagger-ui.html**
+Navigate to: **http://localhost:8081/swagger-ui.html**
 
 ### Step 3: Test the API
 
@@ -57,18 +57,18 @@ Navigate to: **http://localhost:8080/swagger-ui.html**
 
 ```bash
 # 1. Login
-TOKEN=$(curl -s -X POST http://localhost:8080/api/auth/login \
+TOKEN=$(curl -s -X POST http://localhost:8081/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"john@example.com","password":"password123"}' \
   | jq -r '.token')
 
 # 2. Get all issues
 curl -H "Authorization: Bearer $TOKEN" \
-  http://localhost:8080/api/issues?page=0&size=10
+  http://localhost:8081/api/issues?page=0&size=10
 
 # 3. Get all projects
 curl -H "Authorization: Bearer $TOKEN" \
-  http://localhost:8080/api/projects
+  http://localhost:8081/api/projects
 ```
 
 ---
@@ -157,7 +157,7 @@ Connect to WebSocket for live issue updates:
 
 ```javascript
 // JavaScript example
-const socket = new SockJS('http://localhost:8080/ws');
+const socket = new SockJS('http://localhost:8081/ws');
 const stompClient = Stomp.over(socket);
 
 stompClient.connect({}, function() {
@@ -187,7 +187,7 @@ Events:
 ### Application won't start
 ```bash
 # Check if ports are in use
-netstat -ano | findstr :8080
+netstat -ano | findstr :8081
 netstat -ano | findstr :27017
 
 # Kill process if needed (replace <PID> with actual PID)
@@ -244,7 +244,7 @@ docker-compose down -v
 
 1. **Explore Swagger UI**: Try all endpoints interactively
 2. **Import Postman Collection**: Use the provided collection for API testing
-3. **Connect Frontend**: Angular app can connect to `http://localhost:8080`
+3. **Connect Frontend**: Angular app can connect to `http://localhost:8081`
 4. **WebSocket Integration**: Test real-time updates
 5. **Read Full Documentation**: See `IMPLEMENTATION_SUMMARY.md` for complete details
 

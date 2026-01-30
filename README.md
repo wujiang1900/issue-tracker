@@ -41,13 +41,16 @@ $ docker build -t issue-tracker:1.0 .
 ## How to run application
 
 ```shell
-$ docker-compose up
+$ docker-compose up --build
 ```
 
-You can then access to the crud endpoints at http://localhost:8080.
+NOTE: MongoDB will be wiped and re-seeded each time you run the above command. If you want to keep the data, comment out the 2 flags under issuetracker-api.environment in docker-compose.yml file.
+
+
+You can then access to the crud endpoints at http://localhost:8081.
 todo: add postman collections for testing endpoints
 
-API Documentation can be accessed at [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
+API Documentation can be accessed at [http://localhost:8081/swagger-ui.html](http://localhost:8081/swagger-ui.html)
 Also see API Use Cases Section below for examples.
 
 ## How to stop application

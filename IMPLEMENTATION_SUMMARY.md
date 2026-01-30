@@ -83,7 +83,7 @@
   - bob@example.com / password123
 
 #### 8. **API Documentation (Swagger/OpenAPI)**
-- Accessible at: `http://localhost:8080/swagger-ui.html`
+- Accessible at: `http://localhost:8081/swagger-ui.html`
 - Interactive API testing interface
 - JWT authentication support in Swagger UI
 - Comprehensive endpoint descriptions
@@ -151,8 +151,8 @@
 ```bash
 docker-compose up
 ```
-Access API at: `http://localhost:8080`
-Swagger UI: `http://localhost:8080/swagger-ui.html`
+Access API at: `http://localhost:8081`
+Swagger UI: `http://localhost:8081/swagger-ui.html`
 
 ### Option 2: Build and Run Locally
 ```bash
@@ -169,7 +169,7 @@ java -jar target/issue-tracker-1.0-SNAPSHOT.jar
 docker build -t issue-tracker:1.0 .
 
 # Run with external MongoDB
-docker run -p 8080:8080 -e SPRING_DATA_MONGODB_URI=mongodb://host.docker.internal:27017/issuetracker issue-tracker:1.0
+docker run -p 8081:8081 -e SPRING_DATA_MONGODB_URI=mongodb://host.docker.internal:27017/issuetracker issue-tracker:1.0
 ```
 
 ---
@@ -178,7 +178,7 @@ docker run -p 8080:8080 -e SPRING_DATA_MONGODB_URI=mongodb://host.docker.interna
 
 ### 1. Signup
 ```bash
-curl -X POST http://localhost:8080/api/auth/signup \
+curl -X POST http://localhost:8081/api/auth/signup \
   -H "Content-Type: application/json" \
   -d '{
     "name": "Test User",
@@ -189,7 +189,7 @@ curl -X POST http://localhost:8080/api/auth/signup \
 
 ### 2. Login
 ```bash
-curl -X POST http://localhost:8080/api/auth/login \
+curl -X POST http://localhost:8081/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{
     "email": "john@example.com",
@@ -200,7 +200,7 @@ Response: `{ "token": "eyJhbGc...", "email": "john@example.com", ... }`
 
 ### 3. Create Project
 ```bash
-curl -X POST http://localhost:8080/api/projects \
+curl -X POST http://localhost:8081/api/projects \
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -211,7 +211,7 @@ curl -X POST http://localhost:8080/api/projects \
 
 ### 4. Create Issue
 ```bash
-curl -X POST http://localhost:8080/api/issues \
+curl -X POST http://localhost:8081/api/issues \
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -226,13 +226,13 @@ curl -X POST http://localhost:8080/api/issues \
 
 ### 5. Search Issues with Filters
 ```bash
-curl "http://localhost:8080/api/issues?status=OPEN&priority=HIGH&page=0&size=20&sortBy=createdAt&sortDir=desc" \
+curl "http://localhost:8081/api/issues?status=OPEN&priority=HIGH&page=0&size=20&sortBy=createdAt&sortDir=desc" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN"
 ```
 
 ### 6. Add Comment
 ```bash
-curl -X POST http://localhost:8080/api/issues/ISSUE_ID/comments \
+curl -X POST http://localhost:8081/api/issues/ISSUE_ID/comments \
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -472,7 +472,7 @@ db.issues.find().pretty()
 ## Support & Contact
 
 For issues or questions, please refer to:
-- Swagger UI: `http://localhost:8080/swagger-ui.html`
+- Swagger UI: `http://localhost:8081/swagger-ui.html`
 - Application logs: `docker logs issueTracker`
 - MongoDB logs: `docker logs mongodb`
 

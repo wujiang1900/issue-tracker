@@ -7,6 +7,7 @@ import com.issuetracker.repository.UserRepository;
 import com.issuetracker.security.UserRole;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,16 +23,37 @@ import java.util.Set;
 @Slf4j
 public class DataSeeder {
 
+    @Value("${issuetracker.seed.force:false}")
+    private boolean seedForce;
+
+    @Value("${issuetracker.seed.wipe:false}")
+    private boolean seedWipe;
+
     @Bean
     CommandLineRunner initDatabase(UserRepository userRepository,
                                     ProjectRepository projectRepository,
                                     IssueRepository issueRepository,
                                     PasswordEncoder passwordEncoder) {
         return args -> {
-            // Check if data already exists
-            if (userRepository.count() > 0) {
-                log.info("Database already seeded, skipping...");
+            long userCount = userRepository.count();
+
+            // Default behavior: seed only once.
+            // If issuetracker.seed.force=true, we seed even when data already exists.
+            if (userCount > 0 && !seedForce) {
+                log.info("Database already seeded ({} users), skipping...", userCount);
                 return;
+            }
+
+            if (seedForce) {
+                log.warn("issuetracker.seed.force=true → forcing database seed on startup");
+            }
+
+            if (seedForce && seedWipe) {
+                log.warn("issuetracker.seed.wipe=true → wiping existing data before reseeding");
+                // Delete in dependency order
+                issueRepository.deleteAll();
+                projectRepository.deleteAll();
+                userRepository.deleteAll();
             }
 
             log.info("Seeding database with initial data...");

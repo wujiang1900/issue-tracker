@@ -11,7 +11,7 @@ spring:
     type: simple
 
 server:
-  port: 8080
+  port: 8081
 
 jwt:
   secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
@@ -22,3 +22,9 @@ logging:
     com.issuetracker: DEBUG
     org.springframework.security: DEBUG
     org.springframework.data.mongodb: DEBUG
+
+# Database seeding behavior (safe defaults)
+issuetracker:
+  seed:
+    force: false  # set true to seed even when data already exists
+    wipe: false   # set true (with force=true) to delete existing data before reseeding
