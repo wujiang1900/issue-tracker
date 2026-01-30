@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @RequiredArgsConstructor
@@ -95,7 +96,7 @@ public class IssueService {
                 .priority(request.getPriority())
                 .projectId(request.getProjectId())
                 .assigneeId(request.getAssigneeId())
-                .tags(request.getTags() != null ? request.getTags() : new ArrayList<>())
+                .tags(request.getTags() != null ? request.getTags() : ConcurrentHashMap.newKeySet())
                 .comments(new ArrayList<>())
                 .activityLogs(new ArrayList<>())
                 .createdAt(LocalDateTime.now())
@@ -206,10 +207,10 @@ public class IssueService {
 
         Comment comment = Comment.builder()
                 .id(UUID.randomUUID().toString())
-                .userId(user.getId())
-                .userName(user.getName())
-                .text(request.getText())
-                .timestamp(LocalDateTime.now())
+                .authorId(user.getId())
+                .authorName(user.getName())
+                .content(request.getText())
+                .createdAt(LocalDateTime.now())
                 .build();
 
         issue.getComments().add(comment);

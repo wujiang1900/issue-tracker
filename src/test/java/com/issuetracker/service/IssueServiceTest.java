@@ -23,6 +23,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -78,7 +79,7 @@ class IssueServiceTest {
                 .status(IssueStatus.OPEN)
                 .priority(IssuePriority.HIGH)
                 .projectId(testProject.getId())
-                .tags(Arrays.asList("bug", "urgent"))
+                .tags(Set.of("bug", "urgent"))
                 .comments(new ArrayList<>())
                 .activityLogs(new ArrayList<>())
                 .createdAt(LocalDateTime.now())
@@ -115,7 +116,7 @@ class IssueServiceTest {
                 .status(IssueStatus.OPEN)
                 .priority(IssuePriority.MEDIUM)
                 .projectId(testProject.getId())
-                .tags(Arrays.asList("feature"))
+                .tags(Set.of("feature"))
                 .build();
 
         when(userRepository.findByEmail(testUser.getEmail())).thenReturn(Optional.of(testUser));

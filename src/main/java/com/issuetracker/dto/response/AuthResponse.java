@@ -14,14 +14,14 @@ public class AuthResponse {
     private String token;
     @Builder.Default
     private String type = "Bearer";
-    private String id;
+    private String userId;
     private String email;
     private String name;
     private String role;
 
-    public AuthResponse(String token, String id, String email, String name, String role) {
+    public AuthResponse(String token, String userId, String email, String name, String role) {
         this.token = token;
-        this.id = id;
+        this.userId = userId;
         this.email = email;
         this.name = name;
         this.role = role;

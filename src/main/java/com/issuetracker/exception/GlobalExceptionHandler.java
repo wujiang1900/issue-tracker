@@ -24,7 +24,6 @@ public class GlobalExceptionHandler {
         ErrorResponse error = ErrorResponse.builder()
             .timestamp(LocalDateTime.now())
             .status(HttpStatus.NOT_FOUND.value())
-            .error("Not Found")
             .message(ex.getMessage())
             .build();
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
@@ -61,6 +60,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getFieldErrors().forEach(error ->
             errors.put(error.getField(), error.getDefaultMessage())
@@ -69,7 +69,6 @@ public class GlobalExceptionHandler {
         ErrorResponse error = ErrorResponse.builder()
             .timestamp(LocalDateTime.now())
             .status(HttpStatus.BAD_REQUEST.value())
-            .error("Validation Failed")
             .message("Invalid input data")
             .validationErrors(errors)
             .build();
@@ -82,7 +81,6 @@ public class GlobalExceptionHandler {
         ErrorResponse error = ErrorResponse.builder()
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.BAD_REQUEST.value())
-                .error("Bad Request")
                 .message(ex.getMessage())
                 .build();
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
@@ -94,7 +92,6 @@ public class GlobalExceptionHandler {
         ErrorResponse error = ErrorResponse.builder()
             .timestamp(LocalDateTime.now())
             .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-            .error("Internal Server Error")
             .message("An unexpected error occurred")
             .build();
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);

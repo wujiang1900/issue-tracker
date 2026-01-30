@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Set;
 
 @Configuration
 @RequiredArgsConstructor
@@ -107,7 +108,7 @@ public class DataSeeder {
                     .priority(IssuePriority.HIGH)
                     .projectId(project1.getId())
                     .assigneeId(developer1.getId())
-                    .tags(Arrays.asList("backend", "security", "authentication"))
+                    .tags(Set.of("backend", "security", "authentication"))
                     .comments(new ArrayList<>())
                     .activityLogs(Arrays.asList(
                             ActivityLog.builder()
@@ -138,10 +139,10 @@ public class DataSeeder {
 
             issue1.getComments().add(Comment.builder()
                     .id("comment1")
-                    .userId(developer1.getId())
-                    .userName(developer1.getName())
-                    .text("I've implemented the JWT authentication. Ready for review.")
-                    .timestamp(LocalDateTime.now().minusDays(2))
+                    .authorId(developer1.getId())
+                    .authorName(developer1.getName())
+                    .content("I've implemented the JWT authentication. Ready for review.")
+                    .createdAt(LocalDateTime.now().minusDays(2))
                     .build());
 
             issueRepository.save(issue1);
@@ -153,7 +154,7 @@ public class DataSeeder {
                     .priority(IssuePriority.HIGH)
                     .projectId(project1.getId())
                     .assigneeId(developer2.getId())
-                    .tags(Arrays.asList("backend", "websocket", "real-time"))
+                    .tags(Set.of("backend", "websocket", "real-time"))
                     .comments(new ArrayList<>())
                     .activityLogs(Arrays.asList(
                             ActivityLog.builder()
@@ -177,10 +178,10 @@ public class DataSeeder {
 
             issue2.getComments().add(Comment.builder()
                     .id("comment2")
-                    .userId(developer2.getId())
-                    .userName(developer2.getName())
-                    .text("Working on the STOMP configuration")
-                    .timestamp(LocalDateTime.now().minusDays(1))
+                    .authorId(developer2.getId())
+                    .authorName(developer2.getName())
+                    .content("Working on the STOMP configuration")
+                    .createdAt(LocalDateTime.now().minusDays(1))
                     .build());
 
             issueRepository.save(issue2);
@@ -192,7 +193,7 @@ public class DataSeeder {
                     .priority(IssuePriority.MEDIUM)
                     .projectId(project1.getId())
                     .assigneeId(developer1.getId())
-                    .tags(Arrays.asList("database", "mongodb", "performance"))
+                    .tags(Set.of("database", "mongodb", "performance"))
                     .comments(new ArrayList<>())
                     .activityLogs(Arrays.asList(
                             ActivityLog.builder()
@@ -216,7 +217,7 @@ public class DataSeeder {
                     .priority(IssuePriority.MEDIUM)
                     .projectId(project1.getId())
                     .assigneeId(null)
-                    .tags(Arrays.asList("backend", "api", "pagination"))
+                    .tags(Set.of("backend", "api", "pagination"))
                     .comments(new ArrayList<>())
                     .activityLogs(Arrays.asList(
                             ActivityLog.builder()
@@ -240,7 +241,7 @@ public class DataSeeder {
                     .priority(IssuePriority.LOW)
                     .projectId(project1.getId())
                     .assigneeId(null)
-                    .tags(Arrays.asList("backend", "validation", "error-handling"))
+                    .tags(Set.of("backend", "validation", "error-handling"))
                     .comments(new ArrayList<>())
                     .activityLogs(Arrays.asList(
                             ActivityLog.builder()
@@ -265,7 +266,7 @@ public class DataSeeder {
                     .priority(IssuePriority.CRITICAL)
                     .projectId(project2.getId())
                     .assigneeId(developer2.getId())
-                    .tags(Arrays.asList("backend", "payment", "integration"))
+                    .tags(Set.of("backend", "payment", "integration"))
                     .comments(new ArrayList<>())
                     .activityLogs(Arrays.asList(
                             ActivityLog.builder()

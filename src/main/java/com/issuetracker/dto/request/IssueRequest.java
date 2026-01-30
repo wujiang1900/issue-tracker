@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -33,5 +34,5 @@ public class IssueRequest {
 
     private String assigneeId;
 
-    private List<String> tags;
+    private Set<String> tags;
 }

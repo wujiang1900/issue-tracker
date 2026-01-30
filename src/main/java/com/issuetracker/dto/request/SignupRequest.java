@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SignUpRequest {
+public class SignupRequest {
     @NotBlank(message = "User id is required")
     @Size(min = 3, max = 20, message = "User id must be 3-20 characters")
     private String id;

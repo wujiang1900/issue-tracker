@@ -1,8 +1,6 @@
 package com.issuetracker.model;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,8 +24,6 @@ public class Comment {
     @Field("author_name")
     private String authorName; // Denormalized
 
-    @NotBlank(message = "Comment content is required")
-    @Size(min = 1, max = 2000, message = "Comment max 2000 characters")
     private String content;
 
     @CreatedDate

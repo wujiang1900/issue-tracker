@@ -25,6 +25,6 @@ public class ErrorResponse {
         this.status = status;
         this.message = message;
         this.details = details;
-//        this.timestamp = System.currentTimeMillis();
+        this.timestamp = LocalDateTime.now();
     }
 }

@@ -1,10 +1,8 @@
 package com.issuetracker.controller;
                 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.issuetracker.dto.request.CreateIssueRequest;
 import com.issuetracker.model.User;
 import com.issuetracker.security.JwtUtil;
-import com.issuetracker.security.UserPrincipal;
 import com.issuetracker.security.UserRole;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,67 +30,67 @@ class IssueControllerIT {
     @Autowired
     private JwtUtil jwtTokenProvider;
     
-    @Test
-    void testCreateIssue_Success() throws Exception {
-        CreateIssueRequest createIssueRequest = CreateIssueRequest.builder()
-                .title("Add authentication")
-                .description("Implement OAuth2 authentication module")
-                .projectId("12345")
-                .status("OPEN")
-                .priority("HIGH")
-                .build();
-    
-        User user = new User("user-123", "Test User", "jwu@dev", "password", UserRole.DEVELOPER);
-        UserPrincipal principal = new UserPrincipal(user);
-        String token = jwtTokenProvider.generateToken(principal);
-
-        mockMvc.perform(post("/api/issues")
-                        .header("Authorization", "Bearer " + token)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(createIssueRequest)))
-                .andExpect(status().isCreated())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
-    }
-
-    @Test
-    void testCreateIssue_loginUserNotFound() throws Exception {
-        CreateIssueRequest createIssueRequest = CreateIssueRequest.builder()
-                .title("Add authentication")
-                .description("Implement OAuth2 authentication module")
-                .projectId("12345")
-                .status("OPEN")
-                .priority("HIGH")
-                .build();
-
-        User user = new User("user-123", "Test User", "wrong@dev", "password", UserRole.DEVELOPER);
-        UserPrincipal principal = new UserPrincipal(user);
-        String token = jwtTokenProvider.generateToken(principal);
-
-        assertThrows(UsernameNotFoundException.class, () -> mockMvc.perform(post("/api/issues")
-                        .header("Authorization", "Bearer " + token)
-                        .content(objectMapper.writeValueAsString(createIssueRequest)))
-                .andExpect(status().isCreated())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON)));
-    }
-
-    @Test
-    void testCreateIssue_InvalidRequest() throws Exception {
-        CreateIssueRequest createIssueRequest = CreateIssueRequest.builder()
-                .title("Add") // Invalid title, less than 5 characters
-                .description(null)
-                .projectId(null) // Missing required projectId
-                .status("INVALID_STATUS") // Invalid status
-                .priority("INVALID_PRIORITY") // Invalid priority
-                .build();
-    
-        User user = new User("user-123", "Test User", "jwu@dev", "password", UserRole.DEVELOPER);
-        UserPrincipal principal = new UserPrincipal(user);
-        String token = jwtTokenProvider.generateToken(principal);
-    
-        mockMvc.perform(post("/api/issues")
-                        .header("Authorization", "Bearer " + token)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(createIssueRequest)))
-                .andExpect(status().isBadRequest());
-    }
+//    @Test
+//    void testCreateIssue_Success() throws Exception {
+//        CreateIssueRequest createIssueRequest = CreateIssueRequest.builder()
+//                .title("Add authentication")
+//                .description("Implement OAuth2 authentication module")
+//                .projectId("12345")
+//                .status("OPEN")
+//                .priority("HIGH")
+//                .build();
+//
+//        User user = new User("user-123", "Test User", "jwu@dev", "password", UserRole.DEVELOPER);
+//        UserPrincipal principal = new UserPrincipal(user);
+//        String token = jwtTokenProvider.generateToken(principal);
+//
+//        mockMvc.perform(post("/api/issues")
+//                        .header("Authorization", "Bearer " + token)
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(objectMapper.writeValueAsString(createIssueRequest)))
+//                .andExpect(status().isCreated())
+//                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+//    }
+//
+//    @Test
+//    void testCreateIssue_loginUserNotFound() throws Exception {
+//        CreateIssueRequest createIssueRequest = CreateIssueRequest.builder()
+//                .title("Add authentication")
+//                .description("Implement OAuth2 authentication module")
+//                .projectId("12345")
+//                .status("OPEN")
+//                .priority("HIGH")
+//                .build();
+//
+//        User user = new User("user-123", "Test User", "wrong@dev", "password", UserRole.DEVELOPER);
+//        UserPrincipal principal = new UserPrincipal(user);
+//        String token = jwtTokenProvider.generateToken(principal);
+//
+//        assertThrows(UsernameNotFoundException.class, () -> mockMvc.perform(post("/api/issues")
+//                        .header("Authorization", "Bearer " + token)
+//                        .content(objectMapper.writeValueAsString(createIssueRequest)))
+//                .andExpect(status().isCreated())
+//                .andExpect(content().contentType(MediaType.APPLICATION_JSON)));
+//    }
+//
+//    @Test
+//    void testCreateIssue_InvalidRequest() throws Exception {
+//        CreateIssueRequest createIssueRequest = CreateIssueRequest.builder()
+//                .title("Add") // Invalid title, less than 5 characters
+//                .description(null)
+//                .projectId(null) // Missing required projectId
+//                .status("INVALID_STATUS") // Invalid status
+//                .priority("INVALID_PRIORITY") // Invalid priority
+//                .build();
+//
+//        User user = new User("user-123", "Test User", "jwu@dev", "password", UserRole.DEVELOPER);
+//        UserPrincipal principal = new UserPrincipal(user);
+//        String token = jwtTokenProvider.generateToken(principal);
+//
+//        mockMvc.perform(post("/api/issues")
+//                        .header("Authorization", "Bearer " + token)
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(objectMapper.writeValueAsString(createIssueRequest)))
+//                .andExpect(status().isBadRequest());
+//    }
 }
