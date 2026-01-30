@@ -128,8 +128,8 @@ class IssueTrackerIntegrationTest {
 //                        .content(objectMapper.writeValueAsString(issueRequest)))
 //                .andExpect(status().isCreated())
 //                .andExpect(jsonPath("$.title").value("Test Issue"))
-//                .andExpect(jsonPath("$.status").value("OPEN"))
-//                .andExpect(jsonPath("$.priority").value("HIGH"))
+//                .andExpect(jsonPath("$.status").value(IssueStatus.OPEN))
+//                .andExpect(jsonPath("$.priority").value(IssuePriority.HIGH))
 //                .andReturn();
 //
 //        String issueResponse = issueResult.getResponse().getContentAsString();
@@ -145,8 +145,8 @@ class IssueTrackerIntegrationTest {
 //        // 5. Search Issues with filters
 //        mockMvc.perform(get("/api/issues")
 //                        .header("Authorization", "Bearer " + authToken)
-//                        .param("status", "OPEN")
-//                        .param("priority", "HIGH")
+//                        .param("status", IssueStatus.OPEN)
+//                        .param("priority", IssuePriority.HIGH)
 //                        .param("page", "0")
 //                        .param("size", "10"))
 //                .andExpect(status().isOk())

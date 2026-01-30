@@ -3,7 +3,11 @@ debug: false
 spring:
   data:
     mongodb:
+      # Configure this to point to your local or external MongoDB instance
+      # Default assumes MongoDB running locally on default port
       uri: mongodb://localhost:27017/issuetracker_test
+      # Alternative: if you have MongoDB with authentication
+      # uri: mongodb://username:password@localhost:27017/issuetracker_test
   autoconfigure:
     exclude:
       - org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
@@ -12,11 +16,6 @@ issuetracker:
   seed:
     force: false
 
-de:
-  flapdoodle:
-    mongodb:
-      embedded:
-        version: 7.0.5
 
 logging:
   level:
