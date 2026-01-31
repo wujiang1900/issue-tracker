@@ -9,6 +9,8 @@ import com.issuetracker.model.User;
 import com.issuetracker.repository.ProjectRepository;
 import com.issuetracker.repository.UserRepository;
 import com.issuetracker.security.UserRole;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.cache.annotation.CacheEvict;
@@ -51,14 +53,7 @@ public class ProjectService {
     @Transactional
     @CacheEvict(value = "projects", allEntries = true)
     public ProjectResponse createProject(ProjectRequest request, String userEmail) {
-        // Fetch owner details
-        String ownerId = request.getOwnerId();
-        User owner = userRepository.findById(ownerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Project owner not found"));
-
-        if(owner.getRole() != UserRole.PROJECT_OWNER) {
-            throw new IllegalArgumentException("Only project owners can own projects");
-        }
+        validateOwner(request.getOwnerId());
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
@@ -81,9 +76,20 @@ public class ProjectService {
         return convertToResponse(project);
     }
 
+    private void validateOwner(@NotBlank(message = "Project owner id is required") @Size(min = 3, max = 20, message = "Project owner id must be 3-20 characters") String ownerId) {
+        // Fetch owner details
+        User owner = userRepository.findById(ownerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Project owner not found"));
+
+        if(owner.getRole() != UserRole.PROJECT_OWNER) {
+            throw new IllegalArgumentException("Only project owners can own projects");
+        }
+    }
+
     @Transactional
     @CacheEvict(value = "projects", allEntries = true)
     public ProjectResponse updateProject(String id, ProjectRequest request, String userEmail) {
+        validateOwner(request.getOwnerId());
         Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + id));
 
@@ -95,7 +101,10 @@ public class ProjectService {
         }
 
         project.setName(request.getName());
-        project.setDescription(request.getDescription());
+        project.setOwnerId(request.getOwnerId());
+        if(request.getDescription() != null) {
+            project.setDescription(request.getDescription());
+        }
         project.setUpdatedAt(LocalDateTime.now());
 
         project = projectRepository.save(project);

@@ -82,6 +82,17 @@ public class DataSeeder {
                     .build();
             projectOwner = userRepository.save(projectOwner);
 
+            User projectOwner2 = User.builder()
+                    .id("jwupo")
+                    .name("John PO")
+                    .email("jpo@example.com")
+                    .password(passwordEncoder.encode("password123"))
+                    .role(UserRole.PROJECT_OWNER)
+                    .createdAt(LocalDateTime.now())
+                    .updatedAt(LocalDateTime.now())
+                    .build();
+            userRepository.save(projectOwner2);
+
             User developer1 = User.builder()
                     .id("janesmith")
                     .name("Jane Smith")
