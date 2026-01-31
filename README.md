@@ -20,6 +20,10 @@ A minimal but production-minded Issue Tracker backend app that supports users, p
 ## Quick Start Guide
 See QUICKSTART.md file for quick start instructions.
 
+IMPORTANT!!!
+MongoDB needs to be running before proceeding with the following steps (Otherwise integration tests will fail) and starting the application. The docker-compose.yml file provided will start both MongoDB and the application containers.
+
+
 ## How to build
 
 ```shell

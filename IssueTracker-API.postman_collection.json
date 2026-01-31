@@ -1,31 +1,12 @@
 {
   "info": {
+    "_postman_id": "e728bd11-451b-4159-bcb2-82da2bb9880f",
     "name": "Issue Tracker API",
     "description": "Complete API collection for Issue Tracker application",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "51448839",
+    "_collection_link": "https://go.postman.co/collection/51448839-e728bd11-451b-4159-bcb2-82da2bb9880f?source=collection_link"
   },
-  "variable": [
-    {
-      "key": "baseUrl",
-      "value": "http://localhost:8081",
-      "type": "string"
-    },
-    {
-      "key": "token",
-      "value": "",
-      "type": "string"
-    },
-    {
-      "key": "projectId",
-      "value": "",
-      "type": "string"
-    },
-    {
-      "key": "issueId",
-      "value": "",
-      "type": "string"
-    }
-  ],
   "item": [
     {
       "name": "Authentication",
@@ -41,7 +22,10 @@
                   "    var jsonData = pm.response.json();",
                   "    pm.collectionVariables.set('token', jsonData.token);",
                   "}"
-                ]
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
               }
             }
           ],
@@ -55,14 +39,21 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\"\n}"
+              "raw": "{\n    \"userId\": \"jwubp\",\n  \"name\": \"Test User\",\n  \"email\": \"test1@example.com\",\n  \"password\": \"password123\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/api/auth/signup",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "auth", "signup"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "signup"
+              ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Login",
@@ -75,7 +66,8 @@
                   "    var jsonData = pm.response.json();",
                   "    pm.collectionVariables.set('token', jsonData.token);",
                   "}"
-                ]
+                ],
+                "type": "text/javascript"
               }
             }
           ],
@@ -93,10 +85,17 @@
             },
             "url": {
               "raw": "{{baseUrl}}/api/auth/login",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "auth", "login"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
             }
-          }
+          },
+          "response": []
         }
       ]
     },
@@ -115,10 +114,16 @@
             ],
             "url": {
               "raw": "{{baseUrl}}/api/projects",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "projects"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "projects"
+              ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Get Project by ID",
@@ -132,10 +137,17 @@
             ],
             "url": {
               "raw": "{{baseUrl}}/api/projects/{{projectId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "projects", "{{projectId}}"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "projects",
+                "{{projectId}}"
+              ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Create Project",
@@ -148,7 +160,8 @@
                   "    var jsonData = pm.response.json();",
                   "    pm.collectionVariables.set('projectId', jsonData.id);",
                   "}"
-                ]
+                ],
+                "type": "text/javascript"
               }
             }
           ],
@@ -170,10 +183,16 @@
             },
             "url": {
               "raw": "{{baseUrl}}/api/projects",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "projects"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "projects"
+              ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Update Project",
@@ -195,10 +214,17 @@
             },
             "url": {
               "raw": "{{baseUrl}}/api/projects/{{projectId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "projects", "{{projectId}}"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "projects",
+                "{{projectId}}"
+              ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Delete Project",
@@ -212,10 +238,17 @@
             ],
             "url": {
               "raw": "{{baseUrl}}/api/projects/{{projectId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "projects", "{{projectId}}"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "projects",
+                "{{projectId}}"
+              ]
             }
-          }
+          },
+          "response": []
         }
       ]
     },
@@ -234,8 +267,13 @@
             ],
             "url": {
               "raw": "{{baseUrl}}/api/issues?page=0&size=20&sortBy=createdAt&sortDir=desc",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "issues"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "issues"
+              ],
               "query": [
                 {
                   "key": "page",
@@ -255,7 +293,8 @@
                 }
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Search Issues with Filters",
@@ -268,13 +307,19 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/api/issues?status=OPEN&priority=HIGH&search=bug&page=0&size=10",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "issues"],
+              "raw": "{{baseUrl}}/api/issues?priority=HIGH&size=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "issues"
+              ],
               "query": [
                 {
                   "key": "status",
-                  "value": "OPEN"
+                  "value": "OPEN",
+                  "disabled": true
                 },
                 {
                   "key": "priority",
@@ -282,11 +327,13 @@
                 },
                 {
                   "key": "search",
-                  "value": "bug"
+                  "value": "bug",
+                  "disabled": true
                 },
                 {
                   "key": "page",
-                  "value": "0"
+                  "value": "0",
+                  "disabled": true
                 },
                 {
                   "key": "size",
@@ -309,7 +356,8 @@
                 }
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Get Issue by ID",
@@ -323,10 +371,17 @@
             ],
             "url": {
               "raw": "{{baseUrl}}/api/issues/{{issueId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "issues", "{{issueId}}"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "issues",
+                "{{issueId}}"
+              ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Create Issue",
@@ -339,7 +394,8 @@
                   "    var jsonData = pm.response.json();",
                   "    pm.collectionVariables.set('issueId', jsonData.id);",
                   "}"
-                ]
+                ],
+                "type": "text/javascript"
               }
             }
           ],
@@ -361,10 +417,16 @@
             },
             "url": {
               "raw": "{{baseUrl}}/api/issues",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "issues"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "issues"
+              ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Update Issue",
@@ -386,10 +448,17 @@
             },
             "url": {
               "raw": "{{baseUrl}}/api/issues/{{issueId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "issues", "{{issueId}}"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "issues",
+                "{{issueId}}"
+              ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Add Comment to Issue",
@@ -411,10 +480,18 @@
             },
             "url": {
               "raw": "{{baseUrl}}/api/issues/{{issueId}}/comments",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "issues", "{{issueId}}", "comments"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "issues",
+                "{{issueId}}",
+                "comments"
+              ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Delete Issue",
@@ -428,12 +505,41 @@
             ],
             "url": {
               "raw": "{{baseUrl}}/api/issues/{{issueId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "issues", "{{issueId}}"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "issues",
+                "{{issueId}}"
+              ]
             }
-          }
+          },
+          "response": []
         }
       ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "projectId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "issueId",
+      "value": "",
+      "type": "string"
     }
   ]
 }

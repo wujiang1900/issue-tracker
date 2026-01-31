@@ -38,3 +38,5 @@ build/
 ### Mac OS ###
 .DS_Store
 .idea
+.postman
+postman/globals/workspace.postman_globals.json
