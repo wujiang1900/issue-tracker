@@ -59,6 +59,7 @@ class ProjectControllerIT {
 
         // Create project owner user
         projectOwnerUser = User.builder()
+                .id("testowner")
                 .name("Project Owner")
                 .email("owner@example.com")
                 .password(passwordEncoder.encode("password123"))
@@ -70,6 +71,7 @@ class ProjectControllerIT {
 
         // Create developer user
         developerUser = User.builder()
+                .id("testdev")
                 .name("Developer User")
                 .email("developer@example.com")
                 .password(passwordEncoder.encode("password123"))

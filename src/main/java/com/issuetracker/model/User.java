@@ -1,6 +1,8 @@
 package com.issuetracker.model;
 
 import com.issuetracker.security.UserRole;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,6 +21,8 @@ import java.time.LocalDateTime;
 public class User {
 
     @Id
+    @NotBlank(message = "User id is required")
+    @Size(min = 3, max = 20, message = "User id must be 3-20 characters")
     private String id;
 
     @Indexed(unique = true)

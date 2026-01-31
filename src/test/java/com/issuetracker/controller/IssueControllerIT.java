@@ -65,6 +65,7 @@ class IssueControllerIT {
 
         // Create test user
         testUser = User.builder()
+                .id("testuser")
                 .name("Jane Smith")
                 .email("jane@example.com")
                 .password(passwordEncoder.encode("password123"))

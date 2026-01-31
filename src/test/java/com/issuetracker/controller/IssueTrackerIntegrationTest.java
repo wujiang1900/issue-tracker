@@ -102,6 +102,7 @@ class IssueTrackerIntegrationTest {
         ProjectRequest projectRequest = ProjectRequest.builder()
                 .name("Test Project")
                 .description("Integration test project")
+                .ownerId("jwubp")
                 .build();
 
         MvcResult projectResult = mockMvc.perform(post("/api/projects")
