@@ -156,17 +156,31 @@ public class IssueService {
         if (issue.getPriority() != request.getPriority()) {
             changes.append("Priority changed from ").append(issue.getPriority()).append(" to ").append(request.getPriority()).append(". ");
         }
+        if(!issue.getProjectId().equals(request.getProjectId())) {
+            changes.append("Project changed from '").append(issue.getProjectId()).append("' to '").append(request.getProjectId()).append("'. ");
+        }
 
         issue.setTitle(request.getTitle());
-        issue.setDescription(request.getDescription());
         issue.setStatus(request.getStatus());
         issue.setPriority(request.getPriority());
-        issue.setAssigneeId(request.getAssigneeId());
-        issue.setTags(request.getTags());
+        issue.setProjectId(request.getProjectId());
+
+        if(request.getDescription() != null) {
+            issue.setDescription(request.getDescription());
+        }
+
+        if(request.getAssigneeId() != null) {
+            issue.setAssigneeId(request.getAssigneeId());
+        }
+
+        if(request.getTags() != null) {
+            issue.setTags(request.getTags());
+        }
+
         issue.setUpdatedAt(LocalDateTime.now());
 
         // Add activity log
-        if (changes.length() > 0) {
+        if (!changes.isEmpty()) {
             ActivityLog log = ActivityLog.builder()
                     .userId(user.getId())
                     .userName(user.getName())
@@ -258,10 +272,10 @@ public class IssueService {
         );
 
         // Fetch assignee name
-        if (issue.getAssigneeId() != null) {
-            userRepository.findById(issue.getAssigneeId()).ifPresent(assignee ->
-                    response.setAssigneeName(assignee.getName())
-            );
+        String assigneeId = issue.getAssigneeId();
+        if (assigneeId != null) {
+            User assignee = userRepository.findById(assigneeId).orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + assigneeId));
+            response.setAssigneeName(assignee.getName());
         }
 
         return response;
