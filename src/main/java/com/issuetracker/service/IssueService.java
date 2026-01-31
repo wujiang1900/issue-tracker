@@ -136,8 +136,12 @@ public class IssueService {
         Project project = projectRepository.findById(issue.getProjectId())
                 .orElseThrow(() -> new ResourceNotFoundException("Project not found"));
 
-        // Only project owner or admin can update
-        if (!project.getOwnerId().equals(user.getId()) && user.getRole() != UserRole.ADMIN) {
+        // Only project owner, admin, or assigned developer can update
+        boolean isProjectOwner = project.getOwnerId().equals(user.getId());
+        boolean isAdmin = user.getRole() == UserRole.ADMIN;
+        boolean isAssignedDeveloper = issue.getAssigneeId() != null && issue.getAssigneeId().equals(user.getId());
+
+        if (!isProjectOwner && !isAdmin && !isAssignedDeveloper) {
             throw new UnauthorizedException("You are not authorized to update this issue");
         }
 
