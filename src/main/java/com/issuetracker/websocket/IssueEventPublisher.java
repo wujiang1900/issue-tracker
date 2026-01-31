@@ -19,15 +19,15 @@ public class IssueEventPublisher {
     public void publishIssueCreated(IssueResponse issue) {
         log.info("Publishing issue created event for issue: {}", issue.getId());
         messagingTemplate.convertAndSend("/topic/issues/" + issue.getProjectId(),
-            Map.of("type", "CREATED", "issue", issue));
+                Map.of("type", "CREATED", "issue", issue));
     }
 
     public void publishIssueUpdated(IssueResponse issue) {
         log.info("Publishing issue updated event for issue: {}", issue.getId());
         messagingTemplate.convertAndSend("/topic/issues/" + issue.getProjectId(),
-            Map.of("type", "UPDATED", "issue", issue));
+                Map.of("type", "UPDATED", "issue", issue));
         messagingTemplate.convertAndSend("/topic/issue/" + issue.getId(),
-            Map.of("type", "UPDATED", "issue", issue));
+                Map.of("type", "UPDATED", "issue", issue));
     }
 
     public void publishIssueDeleted(String issueId, String projectId) {

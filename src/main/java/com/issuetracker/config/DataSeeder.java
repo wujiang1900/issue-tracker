@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Set;
 
 @Configuration
@@ -31,9 +32,9 @@ public class DataSeeder {
 
     @Bean
     CommandLineRunner initDatabase(UserRepository userRepository,
-                                    ProjectRepository projectRepository,
-                                    IssueRepository issueRepository,
-                                    PasswordEncoder passwordEncoder) {
+                                   ProjectRepository projectRepository,
+                                   IssueRepository issueRepository,
+                                   PasswordEncoder passwordEncoder) {
         return args -> {
             long userCount = userRepository.count();
 
@@ -217,7 +218,7 @@ public class DataSeeder {
                     .assigneeId(developer1.getId())
                     .tags(Set.of("database", "mongodb", "performance"))
                     .comments(new ArrayList<>())
-                    .activityLogs(Arrays.asList(
+                    .activityLogs(Collections.singletonList(
                             ActivityLog.builder()
                                     .userId(projectOwner.getId())
                                     .userName(projectOwner.getName())
@@ -241,7 +242,7 @@ public class DataSeeder {
                     .assigneeId(null)
                     .tags(Set.of("backend", "api", "pagination"))
                     .comments(new ArrayList<>())
-                    .activityLogs(Arrays.asList(
+                    .activityLogs(Collections.singletonList(
                             ActivityLog.builder()
                                     .userId(projectOwner.getId())
                                     .userName(projectOwner.getName())
@@ -265,7 +266,7 @@ public class DataSeeder {
                     .assigneeId(null)
                     .tags(Set.of("backend", "validation", "error-handling"))
                     .comments(new ArrayList<>())
-                    .activityLogs(Arrays.asList(
+                    .activityLogs(Collections.singletonList(
                             ActivityLog.builder()
                                     .userId(projectOwner.getId())
                                     .userName(projectOwner.getName())
@@ -290,7 +291,7 @@ public class DataSeeder {
                     .assigneeId(developer2.getId())
                     .tags(Set.of("backend", "payment", "integration"))
                     .comments(new ArrayList<>())
-                    .activityLogs(Arrays.asList(
+                    .activityLogs(Collections.singletonList(
                             ActivityLog.builder()
                                     .userId(projectOwner.getId())
                                     .userName(projectOwner.getName())

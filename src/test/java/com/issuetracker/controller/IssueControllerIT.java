@@ -1,5 +1,5 @@
 package com.issuetracker.controller;
-                
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.issuetracker.dto.request.IssueRequest;
 import com.issuetracker.model.IssuePriority;
@@ -33,13 +33,13 @@ class IssueControllerIT {
 
     @Autowired
     private MockMvc mockMvc;
-    
+
     @Autowired
     private ObjectMapper objectMapper;
-    
+
     @Autowired
     private JwtUtil jwtTokenProvider;
-    
+
     @Autowired
     private UserRepository userRepository;
 

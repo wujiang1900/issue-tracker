@@ -6,9 +6,9 @@ import com.issuetracker.exception.ResourceNotFoundException;
 import com.issuetracker.exception.UnauthorizedException;
 import com.issuetracker.model.Project;
 import com.issuetracker.model.User;
-import com.issuetracker.security.UserRole;
 import com.issuetracker.repository.ProjectRepository;
 import com.issuetracker.repository.UserRepository;
+import com.issuetracker.security.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.cache.annotation.CacheEvict;
@@ -115,7 +115,7 @@ public class ProjectService {
 
         // Fetch owner name
         userRepository.findById(project.getOwnerId()).ifPresent(owner ->
-            response.setOwnerName(owner.getName())
+                response.setOwnerName(owner.getName())
         );
 
         return response;

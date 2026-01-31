@@ -39,7 +39,7 @@ public class IssueService {
     private final IssueEventPublisher eventPublisher;
 
     public Page<IssueResponse> searchIssues(String status, String priority, String assigneeId,
-                                           String tag, String search, String projectId, Pageable pageable) {
+                                            String tag, String search, String projectId, Pageable pageable) {
         Query query = new Query();
         Criteria criteria = new Criteria();
 

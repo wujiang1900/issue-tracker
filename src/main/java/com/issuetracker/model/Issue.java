@@ -18,8 +18,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Document(collection = "issues")
@@ -28,8 +28,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 @NoArgsConstructor
 @AllArgsConstructor
 @CompoundIndexes({
-    @CompoundIndex(def = "{'projectId': 1, 'status': 1, 'createdAt': -1}", name = "project_status_idx"),
-    @CompoundIndex(def = "{'assigneeId': 1, 'status': 1}", name = "assignee_status_idx")
+        @CompoundIndex(def = "{'projectId': 1, 'status': 1, 'createdAt': -1}", name = "project_status_idx"),
+        @CompoundIndex(def = "{'assigneeId': 1, 'status': 1}", name = "assignee_status_idx")
 })
 public class Issue {
     @Id

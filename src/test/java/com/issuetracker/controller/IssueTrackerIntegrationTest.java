@@ -1,10 +1,10 @@
 package com.issuetracker.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.issuetracker.dto.response.AuthResponse;
 import com.issuetracker.dto.request.IssueRequest;
 import com.issuetracker.dto.request.LoginRequest;
 import com.issuetracker.dto.request.ProjectRequest;
+import com.issuetracker.dto.response.AuthResponse;
 import com.issuetracker.model.IssuePriority;
 import com.issuetracker.model.IssueStatus;
 import com.issuetracker.repository.IssueRepository;
@@ -21,12 +21,13 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.util.Arrays;
 import java.util.Set;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc

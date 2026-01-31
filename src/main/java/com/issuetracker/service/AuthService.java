@@ -1,13 +1,13 @@
 package com.issuetracker.service;
 
-import com.issuetracker.dto.response.AuthResponse;
 import com.issuetracker.dto.request.LoginRequest;
 import com.issuetracker.dto.request.SignupRequest;
+import com.issuetracker.dto.response.AuthResponse;
 import com.issuetracker.exception.ResourceAlreadyExistsException;
 import com.issuetracker.model.User;
-import com.issuetracker.security.UserRole;
 import com.issuetracker.repository.UserRepository;
 import com.issuetracker.security.JwtUtil;
+import com.issuetracker.security.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
