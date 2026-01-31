@@ -39,7 +39,11 @@ echo Docker is running
 
 echo.
 echo Starting Docker services...
-docker-compose up -d
+echo Starting docker build -t issue-tracker:1.0 ....
+docker build -t issue-tracker:1.0 .
+
+echo Starting docker-compose up --build...
+docker-compose up --build
 if %errorlevel% neq 0 (
     echo ERROR: Failed to start Docker services
     echo.
