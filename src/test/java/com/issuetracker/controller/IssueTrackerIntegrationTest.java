@@ -184,12 +184,18 @@ class IssueTrackerIntegrationTest {
                 .andExpect(jsonPath("$.comments").isArray())
                 .andExpect(jsonPath("$.comments", hasSize(greaterThanOrEqualTo(1))));
 
-        // 8. Delete Issue
+        // 8. Verify issue count in project increased by 1
+        mockMvc.perform(get("/api/projects/" + projectId)
+                        .header("Authorization", "Bearer " + authToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.issueCount").value(1));
+
+        // 9. Delete Issue
         mockMvc.perform(delete("/api/issues/" + issueId)
                         .header("Authorization", "Bearer " + authToken))
                 .andExpect(status().isNoContent());
 
-        // 9. Verify Issue is deleted
+        // 10. Verify Issue is deleted
         mockMvc.perform(get("/api/issues/" + issueId)
                         .header("Authorization", "Bearer " + authToken))
                 .andExpect(status().isNotFound());

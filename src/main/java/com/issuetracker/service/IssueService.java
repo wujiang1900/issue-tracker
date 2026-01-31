@@ -115,6 +115,10 @@ public class IssueService {
 
         issue = issueRepository.save(issue);
 
+        // Increment project's issue count
+        project.setIssueCount(project.getIssueCount() + 1);
+        projectRepository.save(project);
+
         IssueResponse response = convertToResponse(issue);
         eventPublisher.publishIssueCreated(response);
 
@@ -194,6 +198,13 @@ public class IssueService {
         }
 
         issueRepository.deleteById(id);
+
+        // Decrement project's issue count
+        if (project.getIssueCount() > 0) {
+            project.setIssueCount(project.getIssueCount() - 1);
+            projectRepository.save(project);
+        }
+
         eventPublisher.publishIssueDeleted(id, issue.getProjectId());
     }
 
