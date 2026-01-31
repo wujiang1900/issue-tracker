@@ -15,5 +15,5 @@ logging:
 # Database seeding behavior (safe defaults)
 issuetracker:
   seed:
-    force: false
-    wipe: false
+    force: true
+    wipe: true

@@ -14,7 +14,8 @@ spring:
 
 issuetracker:
   seed:
-    force: false
+    force: true
+    wipe: true
 
 
 logging:
