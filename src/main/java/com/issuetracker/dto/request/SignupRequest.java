@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class SignupRequest {
     @NotBlank(message = "User id is required")
     @Size(min = 3, max = 20, message = "User id must be 3-20 characters")
-    private String id;
+    private String userId;
 
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email format")

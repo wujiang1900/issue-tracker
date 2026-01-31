@@ -6,22 +6,25 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Test class for the IssueTrackerApplication.
- * This class ensures the correct behavior of the main method in the application class.
+ * This class ensures that the application context loads successfully.
  */
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
 public class IssueTrackerApplicationTest {
 
+    @Autowired
+    private ApplicationContext applicationContext;
+
     /**
-     * Test to verify that the application context loads and the main method runs without throwing exceptions.
+     * Test to verify that the application context loads successfully.
+     * This is a smoke test to ensure basic Spring Boot configuration is valid.
      */
     @Test
-    void testMainMethodRunsSuccessfully() {
-        String[] args = {};
-        assertDoesNotThrow(() -> IssueTrackerApplication.main(args));
+    void testApplicationContextLoads() {
+        assertNotNull(applicationContext, "Application context should not be null");
     }
 }
