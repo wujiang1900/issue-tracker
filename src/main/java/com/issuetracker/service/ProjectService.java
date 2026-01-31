@@ -51,6 +51,14 @@ public class ProjectService {
     @Transactional
     @CacheEvict(value = "projects", allEntries = true)
     public ProjectResponse createProject(ProjectRequest request, String userEmail) {
+        // Fetch owner details
+        String ownerId = request.getOwnerId();
+        User owner = userRepository.findById(ownerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Project owner not found"));
+
+        if(owner.getRole() != UserRole.PROJECT_OWNER) {
+            throw new IllegalArgumentException("Only project owners can own projects");
+        }
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 

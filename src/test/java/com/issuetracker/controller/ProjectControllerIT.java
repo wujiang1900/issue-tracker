@@ -102,6 +102,7 @@ class ProjectControllerIT {
         ProjectRequest request = ProjectRequest.builder()
                 .name("Test Project")
                 .description("Test Description")
+                .ownerId(projectOwnerUser.getId())
                 .build();
 
         mockMvc.perform(post("/api/projects")
@@ -121,6 +122,7 @@ class ProjectControllerIT {
         ProjectRequest request = ProjectRequest.builder()
                 .name("Developer Project")
                 .description("Created by developer")
+                .ownerId(developerUser.getId())
                 .build();
 
         mockMvc.perform(post("/api/projects")
@@ -136,6 +138,7 @@ class ProjectControllerIT {
         ProjectRequest request = ProjectRequest.builder()
                 .name("Test Project")
                 .description("Test Description")
+                .ownerId(projectOwnerUser.getId())
                 .build();
 
         mockMvc.perform(post("/api/projects")

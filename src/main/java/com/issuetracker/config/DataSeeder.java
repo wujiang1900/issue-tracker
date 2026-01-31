@@ -61,6 +61,7 @@ public class DataSeeder {
 
             // Create users
             User admin = User.builder()
+                    .id("admin")
                     .name("Admin User")
                     .email("admin@issuetracker.com")
                     .password(passwordEncoder.encode("admin123"))
@@ -71,6 +72,7 @@ public class DataSeeder {
             admin = userRepository.save(admin);
 
             User projectOwner = User.builder()
+                    .id("johndoe")
                     .name("John Doe")
                     .email("john@example.com")
                     .password(passwordEncoder.encode("password123"))
@@ -81,6 +83,7 @@ public class DataSeeder {
             projectOwner = userRepository.save(projectOwner);
 
             User developer1 = User.builder()
+                    .id("janesmith")
                     .name("Jane Smith")
                     .email("jane@example.com")
                     .password(passwordEncoder.encode("password123"))
@@ -91,6 +94,7 @@ public class DataSeeder {
             developer1 = userRepository.save(developer1);
 
             User developer2 = User.builder()
+                    .id("bobwilson")
                     .name("Bob Wilson")
                     .email("bob@example.com")
                     .password(passwordEncoder.encode("password123"))
