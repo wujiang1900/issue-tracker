@@ -31,11 +31,14 @@ public class AuthService {
             throw new ResourceAlreadyExistsException("User already exists with email: " + request.getEmail());
         }
 
+        // Use the role from request, or default to DEVELOPER if not specified
+        UserRole role = request.getRole() != null ? request.getRole() : UserRole.DEVELOPER;
+
         User user = User.builder()
                 .name(request.getName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(UserRole.USER)
+                .role(role)
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build();

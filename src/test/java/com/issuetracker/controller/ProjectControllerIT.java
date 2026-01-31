@@ -115,9 +115,9 @@ class ProjectControllerIT {
     }
 
     @Test
-    void createProject_withDeveloperRole_returnsCreated() throws Exception {
-        // Note: Based on the business logic, developers might also be able to create projects
-        // If they shouldn't, this test should expect 403 Forbidden
+    void createProject_withDeveloperRole_returnsForbidden() throws Exception {
+        // Developers (USER role) should NOT be able to create projects
+        // Only PROJECT_OWNER and ADMIN roles can create projects
         ProjectRequest request = ProjectRequest.builder()
                 .name("Developer Project")
                 .description("Created by developer")
@@ -127,7 +127,8 @@ class ProjectControllerIT {
                         .header("Authorization", "Bearer " + developerToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isCreated());
+                .andExpect(status().isForbidden())
+        ;
     }
 
     @Test

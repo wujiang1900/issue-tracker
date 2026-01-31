@@ -81,7 +81,8 @@ class IssueTrackerIntegrationTest {
                     "userId": "jwubp",
                     "name": "John Doe",
                     "email": "john@test.com",
-                    "password": "password123"
+                    "password": "password123",
+                    "role": "PROJECT_OWNER"
                 }
                 """;
 
@@ -201,7 +202,8 @@ class IssueTrackerIntegrationTest {
                      "userId": "jwuap",
                     "name": "Jane Smith",
                     "email": "jane@test.com",
-                    "password": "password456"
+                    "password": "password456",
+                    "role": "DEVELOPER"
                 }
                 """;
 

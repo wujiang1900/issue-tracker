@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +31,7 @@ public class IssueController {
 
     @GetMapping
     @Operation(summary = "Search and filter issues with pagination")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Page<IssueResponse>> searchIssues(
             @Parameter(description = "Filter by status (OPEN, IN_PROGRESS, CLOSED)")
             @RequestParam(required = false) String status,
@@ -64,12 +66,14 @@ public class IssueController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get issue by ID")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<IssueResponse> getIssueById(@PathVariable String id) {
         return ResponseEntity.ok(issueService.getIssueById(id));
     }
 
     @PostMapping
     @Operation(summary = "Create a new issue")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<IssueResponse> createIssue(
             @Valid @RequestBody IssueRequest request,
             Authentication authentication) {
@@ -79,6 +83,7 @@ public class IssueController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Update an existing issue")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<IssueResponse> updateIssue(
             @PathVariable String id,
             @Valid @RequestBody IssueRequest request,
@@ -89,6 +94,7 @@ public class IssueController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete an issue")
+    @PreAuthorize("hasAnyRole('PROJECT_OWNER', 'ADMIN')")
     public ResponseEntity<Void> deleteIssue(
             @PathVariable String id,
             Authentication authentication) {
@@ -99,6 +105,7 @@ public class IssueController {
 
     @PostMapping("/{id}/comments")
     @Operation(summary = "Add a comment to an issue")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<IssueResponse> addComment(
             @PathVariable String id,
             @Valid @RequestBody AddCommentRequest request,
